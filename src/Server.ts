@@ -26,12 +26,12 @@ app.use(cookieParser());
 
 // Show routes called in console during development
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 // Security
 if (process.env.NODE_ENV === 'production') {
-    app.use(helmet());
+  app.use(helmet());
 }
 
 // Add APIs
@@ -39,10 +39,10 @@ app.use('/api', BaseRouter);
 
 // Print API errors
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    logger.error(err.message, err);
-    return res.status(BAD_REQUEST).json({
-        error: err.message,
-    });
+  logger.error(err.message, err);
+  return res.status(BAD_REQUEST).json({
+    error: err.message,
+  });
 });
 
 
@@ -56,7 +56,7 @@ app.set('views', viewsDir);
 const staticDir = path.join(__dirname, 'public');
 app.use(express.static(staticDir));
 app.get('*', (req: Request, res: Response) => {
-    res.sendFile('index.html', {root: viewsDir});
+  res.sendFile('index.html', {root: viewsDir});
 });
 
 // Export express instance
