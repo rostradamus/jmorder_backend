@@ -13,7 +13,9 @@ import "@tsed/ajv";
 import "@tsed/swagger";
 import "@tsed/typeorm";
 import typeormConfig from "@config/typeorm";
+import * as dotenv from "dotenv";
 
+export const configs = dotenv.config();
 export const rootDir = __dirname;
 
 @Configuration({

@@ -2,7 +2,7 @@
    "compilerOptions": {
       "baseUrl": "./",
       "module": "commonjs",
-      "target": "es2016",
+      "target": "es6",
       "sourceMap": true,
       "declaration": false,
       "experimentalDecorators": true,
@@ -19,6 +19,7 @@
       "newLine": "LF",
       "noEmit": true,
       "resolveJsonModule": true,
+      "skipLibCheck": true,
       "paths": {
          "@controllers/*": [
             "src/controllers/*"

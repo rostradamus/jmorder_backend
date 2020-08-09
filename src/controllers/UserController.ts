@@ -5,12 +5,14 @@ import { NotFound } from "@tsed/exceptions";
 import { UserGetDto, UserGetMultipleDto } from "@dto/UserDto";
 import { plainToClass } from "class-transformer";
 import { OK, NOT_FOUND } from "http-status-codes";
+import { Authenticate } from "@tsed/passport";
 
 @Controller("/users")
 export class UserController {
   @Post("/")
   @Returns(UserGetDto)
   async create(@BodyParams() user: User): Promise<UserGetDto | null> {
+    await user.hashPassword();
     return plainToClass(UserGetDto, await user.save());
   }
 
@@ -22,6 +24,7 @@ export class UserController {
   }
 
   @Get("/:id")
+  @Authenticate("jwt-user")
   @Returns(NOT_FOUND, { description: "Not found" })
   @Returns(OK, { description: "OK", type: UserGetDto })
   async get(@PathParams("id") id: string): Promise<UserGetDto | undefined> {

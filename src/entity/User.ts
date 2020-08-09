@@ -1,8 +1,11 @@
 import { MaxLength, Required, Email } from "@tsed/common";
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm";
+import { hash, compare } from "bcrypt";
 
 @Entity({ name: "users" })
 export class User extends BaseEntity {
+  private static SALT_ROUNDS = 10;
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -42,9 +45,16 @@ export class User extends BaseEntity {
   updatedAt: Date;
 
   /**
+   * hashPassword
+   */
+  public async hashPassword(): Promise<void> {
+    this.password = await hash(this.password, User.SALT_ROUNDS);
+  }
+
+  /**
    * verifyPassword
    */
-  public verifyPassword(password: string): boolean {
-    return this.password === password;
+  public verifyPassword(password: string): Promise<boolean> {
+    return compare(password, this.password);
   }
 }
