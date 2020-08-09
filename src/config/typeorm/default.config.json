@@ -1,0 +1,25 @@
+{
+  "name": "default",
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "jmorder_admin",
+  "password": "Admin123Admin123",
+  "database": "jmorder_tsed_development",
+  "synchronize": false,
+  "logging": false,
+  "entities": [
+    "${rootDir}/entity/**/*.ts"
+  ],
+  "migrations": [
+    "${rootDir}/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "${rootDir}/subscriber/**/*.ts"
+  ],
+  "cli": {
+    "entitiesDir": "${rootDir}/entity",
+    "migrationsDir": "${rootDir}/migration",
+    "subscribersDir": "${rootDir}/subscriber"
+  }
+}

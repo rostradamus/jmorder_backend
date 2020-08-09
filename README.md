@@ -1,26 +1,21 @@
-# JM Order Backend
+# temp
 
+> An awesome project based on Ts.ED framework
 
-## Requirements
+See [Ts.ED](https://tsed.io) project for more information.
 
-- nodeJS
----
+## Build setup
 
-## Setup
-JM Order Backend
-```
-$ git clone https://github.com/rostradamus/jmorder_backend.git
-$ cd jmorder_backend; yarn install
+> **Important!** Ts.ED requires Node >= 10, Express >= 4 and TypeScript >= 3.
 
-# Requires env folder. Ask Project Owner
-env
-- development.env
-- production.env
-- test.env
-```
----
+```batch
+# install dependencies
+$ yarn install
 
-## Usage
-```
-yarn start:dev
+# serve
+$ yarn start
+
+# build for production
+$ yarn build
+$ yarn start:prod
 ```

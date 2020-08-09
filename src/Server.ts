@@ -1,63 +1,58 @@
-import cookieParser from 'cookie-parser';
-import morgan from 'morgan';
-import path from 'path';
-import helmet from 'helmet';
+import { Configuration, Inject } from "@tsed/di";
+import { PlatformApplication } from "@tsed/common";
+import "@tsed/passport";
+import "@tsed/platform-express"; // /!\ keep this import
+import "reflect-metadata";
+import { GlobalAcceptMimesMiddleware } from "@tsed/platform-express";
+import * as bodyParser from "body-parser";
+import * as compress from "compression";
+import * as cookieParser from "cookie-parser";
+import * as methodOverride from "method-override";
+import * as cors from "cors";
+import "@tsed/ajv";
+import "@tsed/swagger";
+import "@tsed/typeorm";
+import typeormConfig from "@config/typeorm";
 
-import express, { Request, Response, NextFunction } from 'express';
-import { BAD_REQUEST } from 'http-status-codes';
-import 'express-async-errors';
+export const rootDir = __dirname;
 
-import BaseRouter from './routes';
-import logger from '@shared/Logger';
+@Configuration({
+  rootDir,
+  acceptMimes: ["application/json"],
+  httpPort: process.env.PORT || 8083,
+  httpsPort: false, // CHANGE
+  mount: {
+    "/api": [`${rootDir}/controllers/**/*.ts`]
+  },
+  swagger: [
+    {
+      path: "/docs"
+    }
+  ],
+  typeorm: typeormConfig,
+  exclude: ["**/*.spec.ts"],
+  componentsScan: [`${rootDir}/protocols/*{.ts,.js}`],
+  passport: {}
+})
+export class Server {
+  @Inject()
+  app: PlatformApplication;
 
+  @Configuration()
+  settings: Configuration;
 
-// Init express
-const app = express();
-
-
-
-/************************************************************************************
- *                              Set basic express settings
- ***********************************************************************************/
-
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(cookieParser());
-
-// Show routes called in console during development
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  $beforeRoutesInit(): void {
+    this.app
+      .use(cors())
+      .use(GlobalAcceptMimesMiddleware)
+      .use(cookieParser())
+      .use(compress({}))
+      .use(methodOverride())
+      .use(bodyParser.json())
+      .use(
+        bodyParser.urlencoded({
+          extended: true
+        })
+      );
+  }
 }
-
-// Security
-if (process.env.NODE_ENV === 'production') {
-  app.use(helmet());
-}
-
-// Add APIs
-app.use('/api', BaseRouter);
-
-// Print API errors
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  logger.error(err.message, err);
-  return res.status(BAD_REQUEST).json({
-    error: err.message,
-  });
-});
-
-
-
-/************************************************************************************
- *                              Serve front-end content
- ***********************************************************************************/
-
-const viewsDir = path.join(__dirname, 'views');
-app.set('views', viewsDir);
-const staticDir = path.join(__dirname, 'public');
-app.use(express.static(staticDir));
-app.get('*', (req: Request, res: Response) => {
-  res.sendFile('index.html', {root: viewsDir});
-});
-
-// Export express instance
-export default app;
