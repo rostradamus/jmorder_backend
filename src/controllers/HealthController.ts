@@ -1,5 +1,5 @@
 import { Controller, Get, Status } from "@tsed/common";
-import { OK } from 'http-status-codes';
+import { OK } from "http-status-codes";
 
 @Controller("/health")
 export class HealthController {
