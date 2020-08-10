@@ -13,7 +13,7 @@ export class UserGetDto {
 }
 
 @Exclude()
-export class UserGetMultipleDto {
+export class UserIndexDto {
   @Expose() @Property() id: number;
   @Expose() @Property() email: string;
   @Expose() @Property() firstName: string;
