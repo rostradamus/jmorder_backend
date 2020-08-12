@@ -3,7 +3,7 @@ import { Property } from "@tsed/common";
 
 @Exclude()
 export class ClientGetDto {
-  @Expose() @Property() id: string;
+  @Expose() @Property() id: number;
   @Expose() @Property() name: string;
   @Expose() @Property() archived: boolean;
   @Expose() @Property() phone: string;
@@ -11,8 +11,9 @@ export class ClientGetDto {
   @Expose() @Property() updatedAt: Date;
 }
 
+@Exclude()
 export class ClientIndexDto {
-  @Expose() @Property() id: string;
+  @Expose() @Property() id: number;
   @Expose() @Property() name: string;
   @Expose() @Property() archived: boolean;
   @Expose() @Property() phone: string;
