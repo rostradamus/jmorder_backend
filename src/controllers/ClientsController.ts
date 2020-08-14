@@ -4,7 +4,7 @@ import { ClientIndexDto, ClientGetDto } from "@dto/ClientDto";
 import { Client } from "@entity/Client";
 import { plainToClass } from "class-transformer";
 import { Authenticate } from "@tsed/passport";
-import { NOT_FOUND, OK } from "http-status-codes";
+import { NOT_FOUND, OK, NO_CONTENT } from "http-status-codes";
 import { NotFound } from "@tsed/exceptions";
 
 @Controller("/clients")
@@ -13,7 +13,11 @@ export class ClientsController {
   @Get("/")
   @ReturnsArray(ClientIndexDto)
   async getList(): Promise<ClientIndexDto[]> {
-    const clients: Client[] = await Client.find();
+    const clients: Client[] = await Client.find({
+      where: {
+        archived: false
+      }
+    });
     return plainToClass(ClientIndexDto, clients);
   }
 
@@ -33,11 +37,17 @@ export class ClientsController {
   }
 
   @Delete("/:id")
-  @Status(204)
+  @Status(NO_CONTENT)
   async delete(@PathParams("id") id: string): Promise<void> {
-    const client = await Client.findOne(id);
-    if (client === undefined) throw new NotFound("Not found");
-    client.archive();
-    await client.save();
+    await Client.delete(id);
   }
+
+  // @Delete("/:id")
+  // @Status(204)
+  // async delete(@PathParams("id") id: string): Promise<void> {
+  //   const client = await Client.findOne(id);
+  //   if (client === undefined) throw new NotFound("Not found");
+  //   client.archive();
+  //   await client.save();
+  // }
 }

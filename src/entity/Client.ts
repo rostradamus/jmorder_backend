@@ -29,6 +29,6 @@ export class Client extends BaseEntity {
   orders: Order[];
 
   public archive(): void {
-    this.archived = false;
+    this.archived = true;
   }
 }
