@@ -3,7 +3,7 @@
    "version": "1.0.0",
    "description": "",
    "scripts": {
-      "build": "yarn tsc",
+      "build": "rm -rf ./dist && yarn tsc",
       "tsc": "tsc --project tsconfig.compile.json",
       "tsc:w": "tsc --project tsconfig.json -w",
       "start": "nodemon",
@@ -28,10 +28,11 @@
       "exec": "ts-node -r tsconfig-paths/register ./src"
    },
    "_moduleAliases": {
-      "@controllers": "dist/controllers",
       "@config": "dist/config",
+      "@controllers": "dist/controllers",
       "@dto": "dist/dto",
       "@entity": "dist/entity",
+      "@protocols": "dist/protocols",
       "@services": "dist/services",
       "@server": "dist/Server"
    },

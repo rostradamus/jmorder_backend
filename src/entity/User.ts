@@ -1,6 +1,7 @@
 import { MaxLength, Required, Email } from "@tsed/common";
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BaseEntity } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BaseEntity, OneToMany } from "typeorm";
 import { hash, compare } from "bcrypt";
+import { Order } from "./Order";
 
 @Entity({ name: "users" })
 export class User extends BaseEntity {
@@ -43,6 +44,9 @@ export class User extends BaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   /**
    * hashPassword
