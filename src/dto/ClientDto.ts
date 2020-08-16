@@ -1,5 +1,6 @@
-import { Exclude, Expose } from "class-transformer";
+import { Exclude, Expose, Type } from "class-transformer";
 import { Property } from "@tsed/common";
+import { ItemIndexDto } from "./ItemDto";
 
 @Exclude()
 export class ClientGetDto {
@@ -9,6 +10,11 @@ export class ClientGetDto {
   @Expose() @Property() phone: string;
   @Expose() @Property() createdAt: Date;
   @Expose() @Property() updatedAt: Date;
+
+  @Expose()
+  @Type(() => ItemIndexDto)
+  @Property()
+  items: ItemIndexDto[];
 }
 
 @Exclude()
