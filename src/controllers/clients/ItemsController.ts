@@ -3,7 +3,7 @@ import { Authenticate } from "@tsed/passport";
 import { ItemGetDto, ItemIndexDto } from "@dto/ItemDto";
 import { Item } from "@entity/Item";
 import { plainToClass } from "class-transformer";
-import { Returns } from "@tsed/swagger";
+import { Returns, ReturnsArray } from "@tsed/swagger";
 import { NO_CONTENT } from "http-status-codes";
 
 @Controller("/clients/:clientId/items")
@@ -11,12 +11,13 @@ import { NO_CONTENT } from "http-status-codes";
 @MergeParams()
 export class ItemsController {
   @Get("/")
+  @ReturnsArray(ItemIndexDto)
   async get(@PathParams("clientId") clientId: number): Promise<ItemIndexDto[]> {
-    console.log(clientId);
     return plainToClass(ItemIndexDto, await Item.find({ where: { client: clientId }, order: { createdAt: "ASC" } }));
   }
 
   @Get("/:itemId")
+  @Returns(ItemGetDto)
   async getById(@PathParams("clientId") clientId: number, @PathParams("itemId") itemId: number): Promise<ItemGetDto> {
     return plainToClass(ItemGetDto, await Item.findOne({ where: { id: itemId, client: clientId } }));
   }
