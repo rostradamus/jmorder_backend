@@ -1,4 +1,4 @@
-import { Exclude, Expose } from "class-transformer";
+import { Exclude, Expose, Type } from "class-transformer";
 import { Property } from "@tsed/common";
 import { UserGetDto, UserIndexDto } from "./UserDto";
 import { ClientIndexDto, ClientGetDto } from "./ClientDto";
@@ -7,11 +7,13 @@ import { ClientIndexDto, ClientGetDto } from "./ClientDto";
 export class OrderGetDto {
   @Expose() @Property() id: string;
 
-  @Expose({ toClassOnly: true })
+  @Expose()
+  @Type(() => UserGetDto)
   @Property()
   user: UserGetDto;
 
-  @Expose({ toClassOnly: true })
+  @Expose()
+  @Type(() => ClientGetDto)
   @Property()
   client: ClientGetDto;
 
@@ -19,14 +21,17 @@ export class OrderGetDto {
   @Expose() @Property() updatedAt: Date;
 }
 
+@Exclude()
 export class OrderIndexDto {
   @Expose() @Property() id: string;
 
-  @Expose({ toClassOnly: true })
+  @Expose()
+  @Type(() => UserIndexDto)
   @Property()
   user: UserIndexDto;
 
-  @Expose({ toClassOnly: true })
+  @Expose()
+  @Type(() => ClientIndexDto)
   @Property()
   client: ClientIndexDto;
 

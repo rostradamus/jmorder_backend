@@ -24,7 +24,7 @@ export class ClientsController {
   @Get("/:id")
   @Returns(NOT_FOUND, { description: "Not found" })
   @Returns(OK, { description: "OK", type: ClientGetDto })
-  async get(@PathParams("id") id: string): Promise<ClientGetDto | undefined> {
+  async get(@PathParams("id") id: number): Promise<ClientGetDto | undefined> {
     const client: Client | undefined = await Client.findOne(id);
     if (!client) throw new NotFound("Not found");
     return plainToClass(ClientGetDto, client);
@@ -38,7 +38,7 @@ export class ClientsController {
 
   @Delete("/:id")
   @Status(NO_CONTENT)
-  async delete(@PathParams("id") id: string): Promise<void> {
+  async delete(@PathParams("id") id: number): Promise<void> {
     await Client.delete(id);
   }
 
